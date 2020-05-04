@@ -32,14 +32,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="V3d_auxiliary.h" />
 		<Unit filename="auxiliary_funcs.h" />
+		<Unit filename="constants.h" />
 		<Unit filename="error_lib.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="math_func.h" />
 		<Unit filename="structs.h" />
-		<Extensions>
-			<code_completion />
-			<debugger />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

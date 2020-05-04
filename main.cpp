@@ -3,56 +3,49 @@
 #include "math_func.h"
 #include "error_lib.h"
 #include "structs.h"
+#include "V3d_auxiliary.h"
+#include "constants.h"
+
 
 
 int main()
 {
+    int DEGREES = 360; // 360 degrees
+    double START_l = 0.001;
+
+
     Greetings();
-    Nvalues Nss;
 
-    if(CountsError(Nss))
-        return(0);
+    double alpha;
+    double l;
+    double q;
+    double R;
 
-    float* alpha = new float[Nss._Nalpha];
-    float* l = new float[Nss._Nl];
-    float* q = new float[Nss._Nq];
-    Nss.Input(alpha,l,q);
-    Nss.Norm_alpha(alpha);
+    std::cout << "Input the opening angle" << std::endl;
+    std::cin >> alpha;
+    std::cout << "Input length of antenna's shoulder" << std::endl;
+    std::cin >> l;
+    std::cout << "Input the charge of antenna" << std::endl;
+    std::cin >> q;
+    std::cout << "Input the distance for measuring" << std::endl;
+    std::cin >> R;
+
+    alpha /= 2;
+
+    int degr = std::ceil( 2 * Pi * l * cos(tacos * alpha));
+
+
+    Sector S1,S2,S3,S4;
+    S1.SectorZeroFiller(alpha,START_l,l, std::ceil(degr / 4.0));
+    S2.SectorFiller(S1,1);
+    S3.SectorFiller(S1,2);
+    S4.SectorFiller(S1,3);
+
 
     std::cout << "-=-=-=-\n evaluating starting\n-=-=-=-" << std::endl;
 
-    SolvedData* Data = new SolvedData[Nss.Sum()];
-    //std::cout << "Size of Nvalues:" << sizeof(Nvalues) << std::endl;
-
-    //std::cout << "Size of SolvedData:" << sizeof(SolvedData) << std::endl;
-
-    int n_el = 0;
-    int all = Nss.Sum();
-
     std::cout << "Status of progress:" << std::endl;
 
-    for (int i = 0; i < Nss._Nalpha; ++i)
-        for (int j = 0; j < Nss._Nl; ++j)
-            for (int k = 0; k < Nss._Nq; ++k)
-            {
-                ++n_el;
-                startEvaluate(alpha[i],l[j],q[k], &Data[n_el]);
-                ShowProgress(Percent(all, n_el));
-            }
-/*
-    for (int i = 0; i < Nss.Nr; ++i)
-        for (int j = 0; j < Nss.Nl; ++j)
-            for (int k = 0; k < Nss.Nb; ++k)
-            {
-                ++n_el;
-                OutputConsoleMaxE(R[i],l[j],betta[k], &Data[n_el]);
-            }
-*/
-    ChangeOutputInFile(Nss, Data, q, l, alpha);
-
-    delete [] q;
-    delete [] l;
-    delete [] alpha;
 
     WaitingEnter();
     return 0;

@@ -33,7 +33,6 @@ void ShowProgress(int stage)
         std::cout << ".";
 }
 
-
 void Greetings()
 {
     for (int i = 0; i < 70; ++i)
@@ -53,79 +52,11 @@ void Greetings()
     for (int i = 0; i < 5; ++i)
         std::cout << "\n";
     std::cout << std::endl;
-};
+}
 
 void OutputConsole(SolvedData Data)
 {
     std::cout << "E " << ":....  :"  << Data.E << std::endl;
-};
-
-void OutputDifFiles(SolvedData Data, float alpha, float l, float q)
-{
-    std::string namefile = WAY + "Data alpha=" + std::to_string(alpha) + " l=" + std::to_string(l) + " q=" + std::to_string(q * 2) + ".csv";
-    std::ofstream file;
-    file.open(namefile);
-    file << Data.E <<"; ";
-    file << "\n";
-    file.close();
-};
-
-void OutputOneFile(Nvalues Nss, SolvedData *Data, float *alpha, float *l, float *q)
-{
-    std::string namefile = WAY + "Data_All.csv";
-    std::ofstream file;
-    file.open(namefile);
-    int n_el = 0;
-
-    for (int j = 0; j < Nss._Nalpha; ++j)
-        for (int i = 0; i < Nss._Nl; ++i)
-            for (int k = 0; k < Nss._Nq; ++k)
-            {
-                file << "alpha = " << alpha[j] << " l = " << l[i]  << " q = " << q[k] * 2 << "\n";
-                ++n_el;
-                file << Data[n_el].E <<";\n";
-                file << "\n";
-
-            }
-    file.close();
-    std::cout << "\nOutput complete!" << std::endl;
-};
-
-void ChangeOutputInFile(Nvalues Nss, SolvedData *Data, float *alpha, float *l, float* q)
-{
-    int ch;
-    std::cout << "\nEvaluate is over!\nHow do you want to write results?\n[1-in one file\\2-in different files\\3-in console]  :";
-    std::cin >> ch;
-    int n_el = 0;
-    switch (ch)
-    {
-        case 1:
-            OutputOneFile(Nss, Data, alpha, l, q);
-        break;
-        case 2:
-            for (int i = 0; i < Nss._Nalpha; ++i)
-                for (int j = 0; j < Nss._Nl; ++j)
-                    for (int k = 0; k < Nss._Nq; ++k)
-                    {
-                        ++n_el;
-                        OutputDifFiles(Data[n_el], alpha[i], l[j], q[k]);
-                    }
-            std::cout << "\nOutput complete!" << std::endl;
-        break;
-        case 3:
-            for (int i = 0; i < Nss._Nalpha; ++i)
-                for (int j = 0; j < Nss._Nl; ++j)
-                    for (int k = 0; k < Nss._Nq; ++k)
-                    {
-                        ++n_el;
-                        OutputConsole(Data[n_el]);
-                    }
-            std::cout << "\nOutput complete!" << std::endl;
-        break;
-        /*default:
-            ChangeError();*/
-    }
 }
-
 
 #endif // AUXILIARY_FUNCS_H_INCLUDED

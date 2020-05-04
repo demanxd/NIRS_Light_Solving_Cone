@@ -2,88 +2,162 @@
 #define STRUCTS_H_INCLUDED
 #pragma once
 
-struct SolvedData
+#include "constants.h"
+#include <vector>
+#include <string>
+
+struct V3d //vector 3 dimension
 {
-    float E = 0;
+    void  SetV3d(double x, double y, double z);
+    double GetV3d(std::string);
+    void Show();
+
+    double _x;
+    double _y;
+    double _z;
 };
 
-
-///number of inputed values
-struct Nvalues
+void V3d::Show()
 {
-    int _Nalpha;
-    int _Nl;
-    int _Nq;
-    Nvalues();
-    void Input(float *alpha, float *l, float *q);
-    void InputAuto(float *alpha, float *l, float *q); //spec_func only for test
-    int Sum();
-    void Norm_alpha(float *betta);
-};
-
-Nvalues::Nvalues()
-{
-    std::cout << "Please, input number of alpha angles" << std::endl;
-    std::cin >> this->_Nalpha;
-    std::cout << "\nPlease, input number of l" << std::endl;
-    std::cin >> this->_Nl;
-    std::cout << "\nPlease, input number of charges" << std::endl;
-    std::cin >> this->_Nq;
-};
-
-void Nvalues::Input(float *alpha, float *l, float *q)
-{
-    std::cout << "Please, input your " << this->_Nalpha << " values for angles alpha" << std::endl;
-    for (int i = 0; i < this->_Nalpha; ++i)
-    {
-        std::cout << i+1 << ":       _:";
-        std::cin >> alpha[i];
-    }
-    std::cout << "Please, input your " << this->_Nl << " values for l" << std::endl;
-    for (int i = 0; i < this->_Nl; ++i)
-    {
-        std::cout << i+1 << ":       _:";
-        std::cin >> l[i];
-    }
-    std::cout << "Please, input your " << this->_Nq << " values for charges" << std::endl;
-    for (int i = 0; i < this->_Nq; ++i)
-    {
-        std::cout << i+1 << ":       _:";
-        std::cin >> q[i];
-    }
-    std::cout << "All values added" << std::endl;
-};
-
-void Nvalues::Norm_alpha(float *alpha)
-{
-    for (int i = 0; i < this->_Nalpha; ++i)
-    {
-        alpha[i]/=2;
-    }
-    std::cout << "All angles are normed" << std::endl;
+    std::cout << _x << ";   " << _y << ";   " << _z << ";" << std::endl;
 }
 
-//spec_func only for test
-void Nvalues::InputAuto(float *alpha, float *l, float *q)
+void V3d::SetV3d(double x, double y, double z)
 {
-    for (int i = 0; i < this->_Nalpha; ++i)
-    {
-        alpha[i] = i+1;
-    }
-    for (int i = 0; i < this->_Nl; ++i)
-    {
-        l[i] = i+1;
-    }
-    for (int i = 0; i < this->_Nq; ++i)
-    {
-        q[i] = i+1;
-    }
-    std::cout << "All values added" << std::endl;
+    _x = x;
+    _y = y;
+    _z = z;
+}
+
+double V3d::GetV3d(std::string str)
+{
+
+    if (str == "x")
+        return _x;
+    else if (str == "y")
+        return _y;
+    else if (str == "z")
+        return _z;
+    else
+        std::cout << "error in GetV func. parameter str = " << str << std::endl;
+        return 0;
+}
+
+
+struct V2d //vector 2 dimension
+{
+    void  SetV2d(double x, double y);
+    double GetV2d(std::string);
+
+    double _x;
+    double _y;
 };
 
-int Nvalues::Sum()
+void V2d::SetV2d(double x, double y)
 {
-    return this->_Nalpha * this->_Nl * this->_Nq;
+    _x = x;
+    _y = y;
+}
+
+double V2d::GetV2d(std::string str)
+{
+
+    if (str == "x")
+        return _x;
+    else if (str == "y")
+        return _y;
+    else
+        std::cout << "error in GetV func. parameter str = " << str << std::endl;
+        return 0;
+}
+
+struct SolvedData
+{
+    double E = 0;
 };
+
+
+struct Sector
+{
+    std::vector<V3d> _points;  //_points[0] == _point_start; inother - _points_end
+    std::vector<double> _E;
+    std::vector<double> _charges; //_charges[0] == _q_start; inother - _q_end;
+    Sector(){};
+    ~Sector(){};
+    void SectorZeroFiller(double, double, double, int);
+    void SectorFiller(Sector, short);
+    //void FindE();
+    //void FindPartE();
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void Sector::SectorZeroFiller(double alpha_n, double l_f, double l_l, int slines) //l_f - at begin, l_l - at end; ||khuynja||
+{
+    V3d tmp;
+    tmp.SetV3d((l_f * cos(alpha_n * tacos)), (l_f * sin(alpha_n * tacos) * cos(45 * tacos)), (l_f * sin(alpha_n * tacos) * cos(45 * tacos)));
+    tmp.Show();
+    _points.push_back(tmp);
+    int step = std::ceil(90.0 / slines);
+    for (int degrees = step; degrees < 90; degrees+=step)
+    {
+        tmp.SetV3d((l_l * cos(alpha_n * tacos)), (l_l * sin(alpha_n * tacos) * cos(degrees * tacos)), (l_l * sin(alpha_n * tacos) * sin(degrees * tacos)));
+        tmp.Show();
+        _points.push_back(tmp);
+    }
+}
+
+void Sector::SectorFiller(Sector S, short quarter)
+{
+    switch(quarter)
+    {
+        case 1:
+        {
+            V3d tmp;
+            for(auto vec : S._points)
+            {
+                tmp.SetV3d(vec.GetV3d("x"), - vec.GetV3d("y"), vec.GetV3d("z"));
+                tmp.Show();
+                _points.push_back(tmp);
+            }
+        }
+        break;
+        case 2:
+        {
+            V3d tmp;
+            for(auto vec : S._points)
+            {
+                tmp.SetV3d(vec.GetV3d("x"), - vec.GetV3d("y"), - vec.GetV3d("z"));
+                tmp.Show();
+                _points.push_back(tmp);
+            }
+        }
+        break;
+        case 3:
+        {
+            V3d tmp;
+            for(auto vec : S._points)
+            {
+                tmp.SetV3d(vec.GetV3d("x"), vec.GetV3d("y"), - vec.GetV3d("z"));
+                tmp.Show();
+                _points.push_back(tmp);
+            }
+        }
+    }
+}
+
 
 #endif // STRUCTS_H_INCLUDED

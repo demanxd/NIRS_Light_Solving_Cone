@@ -7,11 +7,11 @@
 #include "math_func.h"
 #include "auxiliary_funcs.h"
 
-#include <cstring>
+#include <string>
 
 
 
-bool CountsError(Nvalues Nss)
+/*bool CountsError(Nvalues Nss)
 {
     if ((Nss._Nalpha == 0)||(Nss._Nl == 0)||(Nss._Nq == 0))
     {
@@ -21,7 +21,7 @@ bool CountsError(Nvalues Nss)
     }
     else
         return false;
-};
+};*/
 
 void FormulaError(std::string name)
 {
