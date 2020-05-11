@@ -5,7 +5,7 @@
 
 #include "structs.h"
 #include "math_func.h"
-#include "auxiliary_funcs.h"
+#include "auxiliary_funcs.cpp"
 
 #include <string>
 
@@ -34,4 +34,5 @@ void ChangeError()
 {
     std::cout << "Error Input" << std::endl;
 };
+
 #endif // ERROR_LIB_H_INCLUDED

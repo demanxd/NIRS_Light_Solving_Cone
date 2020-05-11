@@ -1,6 +1,10 @@
 #ifndef CONSTANTS_H_INCLUDED
 #define CONSTANTS_H_INCLUDED
 
+#pragma once
+
+#include <math.h>
+
 
 const static double Pi = 3.141592653589793;
 const static double w = 120 * Pi;

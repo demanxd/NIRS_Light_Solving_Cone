@@ -9,31 +9,51 @@
 #include "constants.h"
 
 
-///r block
 
-void gen_vec_r0 (V2d q_pos, V2d *v_r0)
+V3d gen_vec_r(V3d first_point, V3d second_point)
 {
-    v_r0->SetV2d(q_pos.GetV2d("x") * 100,q_pos.GetV2d("y") * 100);
+    V3d r;
+    r.SetV3d((first_point.GetV3d("x") - second_point.GetV3d("x")),
+              (first_point.GetV3d("y") - second_point.GetV3d("y")),
+               (first_point.GetV3d("z") - second_point.GetV3d("z")));
+    return r;
 }
 
-void gen_vec_r (float alpha, V2d v_r0, V2d *v_r)
+void gen_mod (V3d start_vector, V3d end_vector, double *m)
 {
-    v_r->SetV2d((v_r0.GetV2d("x") - cos(alpha * tacos)),(v_r0.GetV2d("y") - sin(alpha * tacos)));
+    *m = sqrt(pow((start_vector.GetV3d("x") - end_vector.GetV3d("x")),2)          //x
+              + pow((start_vector.GetV3d("y") - end_vector.GetV3d("y")),2)       //y
+              + pow((start_vector.GetV3d("z") - end_vector.GetV3d("z")),2));    //z
 }
 
-void gen_m (V2d v_r0, V2d v_r, float *m)
+double gen_devider(double mod, double vec)
 {
-    *m = (float)sqrt(pow((v_r.GetV2d("x") - v_r0.GetV2d("x")),2) + pow((v_r.GetV2d("y") - v_r0.GetV2d("y")),2));
+    return 1 / (pow(mod, 2) * pow((1 - vec * c),3));
 }
-
-
-void evalR(float alpha, float l, V2d q_pos, V2d *v_r, V2d *v_r0, float* m, float* v)
+/*
+void gen_vec (V3d start_position, V3d end_position, double *v)
 {
-    gen_vec_r0(q_pos, v_r0);
-    gen_vec_r(alpha, *v_r0, v_r);
+    *v = (pow((start_position.GetV3d("x") + end_position.GetV3d("x")),2)          //x
+              + pow((start_position.GetV3d("y") + end_position.GetV3d("y")),2)       //y
+              + pow((start_position.GetV3d("z") + end_position.GetV3d("z")),2));    //z
+}/**/
 
-    gen_m(*v_r0, *v_r, m);
-    //gen_v(*v_r0, *v_r, v);
+///     s_p - start point  \
+        e_p - end point     \
+        v_ev - evaluate point\
+        vec_r - vector r      \
+        vec_r0 - vector r      \
+        m - module r - r0       \
+        v - vector r - r0
+void evalR(V3d s_p, V3d e_p, V3d ev_p, V3d* vec_r, V3d* vec_r0, double* m, double* v, double* devider)
+{
+    V3d r = gen_vec_r(s_p, ev_p);
+    V3d r0 = gen_vec_r(e_p, ev_p);
+
+    gen_mod(r, r0, m);
+    *v = 1.0;
+
+    *devider = gen_devider(*m,*v);
 }
 
 ///E block
@@ -50,28 +70,45 @@ float E1(float alpha, float l,float q, float mod)
 };
 
 ///evaluate E
-void evalE(float alpha, float l, float q, float mod, SolvedData *Data)
+double evalE(double devider, double charge, double dcharge, double vec_n, double mod_r)
 {
-    Data->E = /*buritos */ (1 / (mod * mod * (1 - 3 * c + 3 * c*c - c*c*c))) * (q / (2 * (int)(Pi * l * 100))) * (E0(alpha,l,q) + E1(alpha,l,q,mod)) * (int)(Pi * l * 100);
-    std::cout << "buritos = " << buritos << "\nafter buritos = " << (mod * mod * (1 - 3 * c + 3 * c*c - c*c*c)) <<"\nPi l = " << (int)(Pi * l * 100) << "\n";
+    return (buritos * devider * (charge * (vec_n - c * (c*c + (1 - vec_n * c))) + dcharge * (vec_n + c) * (1/c) * mod_r * (1 - vec_n * c)));
 };
 
 ///evaluate start
-void EvaluateE(float alpha, float l,float q, V2d q_pos, SolvedData *Data)
+double EvaluateE(double q, double dq, V3d start_point, V3d end_point, V3d eval_point)
 {
-    V2d*   vec_r  = new V2d;
-    V2d*   vec_r0 = new V2d;
+    V3d*  vec_r  = new V3d;
+    V3d*  vec_r0 = new V3d;
 
-    float*  mod = new float;     //|r-r|
-    float*  vec = new float;     //(r-r)
+    double*  mod     = new double;     //|r-r|
+    double*  vec     = new double;     //(r-r)
+    double*  devider = new double;
 
-    evalR(alpha, l * 100, q_pos, vec_r0, vec_r, mod, vec);
+    evalR(start_point, end_point, eval_point, vec_r, vec_r0, mod, vec, devider);
 
-    evalE(alpha, l * 100, q, *mod, Data);
+    double E = evalE(*devider, q, dq, *vec, *mod);
 
-
-    delete vec_r0;
     delete vec_r;
+    delete vec_r0;
+
+    delete mod;
+    delete vec;
+    delete devider;
+
+    return E;
 };
+
+V3d gen_eval_point(double l, double angle)
+{
+    V3d tmp;
+    tmp.SetV3d((l * cos(angle * tacos)), (l * sin(angle * tacos)), 0);
+    return tmp;
+}
+
+double gen_q(double charge, double l, double alpha_norm)
+{
+    return (charge) / (2 * Pi * l * sin(alpha_norm * tacos));
+}
 
 #endif // MATH_FUNC_H_INCLUDED
