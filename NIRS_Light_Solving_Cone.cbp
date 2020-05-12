@@ -32,12 +32,20 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Sector_class.cpp" />
+		<Unit filename="Sector_class.h" />
+		<Unit filename="V3d_auxiliary.h" />
+		<Unit filename="auxiliary_funcs.cpp" />
+		<Unit filename="auxiliary_funcs.h" />
+		<Unit filename="constants.h" />
+		<Unit filename="error_lib.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="math_func.cpp" />
+		<Unit filename="math_func.h" />
+		<Unit filename="structs.cpp" />
+		<Unit filename="structs.h" />
 		<Extensions>
-			<envvars />
-			<code_completion />
 			<lib_finder disable_auto="1" />
-			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

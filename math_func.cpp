@@ -79,6 +79,7 @@ double EvaluateE(double q, double dq, V3d start_point, V3d end_point, V3d eval_p
     evalR(start_point, end_point, eval_point, vec_r, vec_r0, mod, vec, devider);
 
     double E = evalE(*devider, q, dq, *vec, *mod);
+    std::cout << "mod = " << *mod << "; addr mod = " << mod << "; E = " << E << std::endl;
 
     delete vec_r;
     delete vec_r0;
