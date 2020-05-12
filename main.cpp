@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
+
 
 #include "math_func.h"
 #include "error_lib.h"
@@ -56,16 +58,29 @@ int main()
 
     std::cout << "-=-=-=-\n evaluating starting\n-=-=-=-" << std::endl;
 
-    std::cout << "Status of progress:" << std::endl;
+    std::cout << "progress:" << std::endl;
 
     int all_points = 360;
+
+    std::vector<double> rez_E;
 
     for (int i = 0; i < all_points; i++)
     {
         ShowProgress(Percent(360,i));
 
-        //V3d gen_eval_point(double l, double angle)
+        V3d evaluating_point = gen_eval_point(l, i);
+        evaluating_point.Show();
 
+        S1.Eval_E(q,dq,evaluating_point);
+        S2.Eval_E(q,dq,evaluating_point);
+        S3.Eval_E(q,dq,evaluating_point);
+        S4.Eval_E(q,dq,evaluating_point);
+        NS1.Eval_E(q,dq,evaluating_point);
+        NS2.Eval_E(q,dq,evaluating_point);
+        NS3.Eval_E(q,dq,evaluating_point);
+        NS4.Eval_E(q,dq,evaluating_point);
+
+        rez_E.push_back(S1.Sum_E() + S2.Sum_E() + S3.Sum_E() + S4.Sum_E() + NS1.Sum_E() + NS2.Sum_E() + NS3.Sum_E() + NS4.Sum_E());
     }
 
     WaitingEnter();

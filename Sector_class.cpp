@@ -85,5 +85,14 @@ void Sector::Eval_E(double q, double dq, V3d eval_point)
 {
     for (int i = 1; i < _points.size(); i++)
         _E.push_back(EvaluateE(q,dq,_points.at(0),_points.at(i), eval_point));
-    _E.push_back(EvaluateE(q,dq,_points.at(std::ceil(_points.size() / 2)),_points.at(0), eval_point));
+    _E.push_back(EvaluateE(dq,q,_points.at(std::ceil(_points.size() / 2)),_points.at(0), eval_point));
+}
+
+
+double Sector::Sum_E()
+{
+    double rez = 0.0;
+    for(auto n : _E)
+        rez += n;
+    return rez;
 }

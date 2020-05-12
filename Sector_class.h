@@ -15,6 +15,7 @@ struct Sector
     void SectorFiller(Sector, short);
     void Negate(Sector);
     void Eval_E(double, double, V3d);
+    double Sum_E();
 };
 
 
