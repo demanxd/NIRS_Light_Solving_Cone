@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <string>
 
 
 #include "math_func.h"
@@ -18,6 +19,7 @@ int main()
     int DEGREES = 360; // 360 degrees
     double START_l = 1; //mm
 
+p1:
 
     Greetings();
 
@@ -53,6 +55,9 @@ int main()
     NS2.Negate(S2);
     NS3.Negate(S3);
     NS4.Negate(S4);
+
+    std::cout << "In this case, " << S1._points.size() + S2._points.size() + S3._points.size() + S4._points.size() +
+                            NS1._points.size() + NS2._points.size() + NS3._points.size() + NS4._points.size()<< " sectors" << std::endl;
 
 
     double dq = gen_q(q0,START_l,alpha);
@@ -98,6 +103,16 @@ int main()
     for(int i = 0; i < all_points; i++)
     {
         OutputConsole(rez_E.at(i), i);
+    }
+
+    std::string ans;
+
+    std::cout << "Do you want to evaluate on more? (Y if yes)\t";
+    std::cin >> ans;
+    if(ans == "Y")
+    {
+        ans.clear();
+        goto p1;
     }
 
     return 0;
