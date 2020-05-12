@@ -40,7 +40,7 @@ void Greetings()
     std::cout << std::endl;
     for (int i = 0; i < 5; ++i)
         std::cout << " ";
-    std::cout << "Programm for solving field of triangular antennas parameters" << std::endl;
+    std::cout << "Programm for solving field of cone antennas parameters" << std::endl;
     for (int i = 0; i < 29; ++i)
         std::cout << " ";
     std::cout << "Version 1.0" <<std::endl;

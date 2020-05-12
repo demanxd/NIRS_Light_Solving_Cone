@@ -16,7 +16,7 @@
 int main()
 {
     int DEGREES = 360; // 360 degrees
-    double START_l = 0.001;
+    double START_l = 1; //mm
 
 
     Greetings();
@@ -36,6 +36,8 @@ int main()
     std::cin >> R;
 
     alpha /= 2;
+    l *= 1000;
+    R *= 1000;
 
     int degr = std::ceil( 2 * Pi * l * cos(tacos * alpha));
 
