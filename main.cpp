@@ -1,12 +1,13 @@
 #include <iostream>
 #include <cmath>
+
 #include "math_func.h"
 #include "error_lib.h"
 #include "structs.h"
 #include "Sector_class.h"
 #include "V3d_auxiliary.h"
 #include "constants.h"
-#include "auxiliary_funcs.cpp"
+#include "auxiliary_funcs.h"
 
 
 

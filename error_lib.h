@@ -3,11 +3,11 @@
 
 #pragma once
 
-#include "structs.h"
-#include "math_func.h"
-#include "auxiliary_funcs.cpp"
+//#include "structs.h"
+//#include "math_func.h"
+//#include "auxiliary_funcs.h"
 
-#include <string>
+//#include <string>
 
 
 
@@ -23,16 +23,16 @@
         return false;
 };*/
 
-void FormulaError(std::string name)
+/*void FormulaError(std::string name)
 {
     std::cout << "Error!\n------\nError number 1001\n------" << std::endl;
     std::cout << "In formula ||" << name << "|| no errors" << std::endl;
-    WaitingEnter();
-};
-
+    //WaitingEnter();
+};/**/
+/*
 void ChangeError()
 {
     std::cout << "Error Input" << std::endl;
-};
+};/**/
 
 #endif // ERROR_LIB_H_INCLUDED

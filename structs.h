@@ -20,8 +20,8 @@ struct V3d //vector 3 dimension
     double _y;
     double _z;
 
-    V3d(){};
-    ~V3d(){};
+   /* V3d(){};
+    ~V3d(){};*/
 };
 
 struct SolvedData
