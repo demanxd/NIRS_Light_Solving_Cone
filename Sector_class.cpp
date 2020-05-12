@@ -96,3 +96,8 @@ double Sector::Sum_E()
         rez += n;
     return rez;
 }
+
+void Sector::Clear_E()
+{
+    _E.clear();
+}

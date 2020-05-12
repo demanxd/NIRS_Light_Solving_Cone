@@ -53,10 +53,10 @@ void Greetings()
         std::cout << "\n";
     std::cout << std::endl;
 }
-/*
-void OutputConsole(SolvedData Data)
+
+void OutputConsole(double E, int degree)
 {
-    std::cout << "E " << ":....  :"  << Data.E << std::endl;
+    std::cout << "E:....: "  << E << "\tdegree:....." << degree << std::endl;
 }/**/
 
 #endif // AUXILIARY_FUNCS_H_INCLUDED

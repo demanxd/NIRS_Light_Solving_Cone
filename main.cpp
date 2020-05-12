@@ -69,7 +69,7 @@ int main()
         ShowProgress(Percent(360,i));
 
         V3d evaluating_point = gen_eval_point(l, i);
-        evaluating_point.Show();
+        //evaluating_point.Show();
 
         S1.Eval_E(q,dq,evaluating_point);
         S2.Eval_E(q,dq,evaluating_point);
@@ -81,8 +81,22 @@ int main()
         NS4.Eval_E(q,dq,evaluating_point);
 
         rez_E.push_back(S1.Sum_E() + S2.Sum_E() + S3.Sum_E() + S4.Sum_E() + NS1.Sum_E() + NS2.Sum_E() + NS3.Sum_E() + NS4.Sum_E());
+        S1.Clear_E();
+        S2.Clear_E();
+        S3.Clear_E();
+        S4.Clear_E();
+        NS1.Clear_E();
+        NS2.Clear_E();
+        NS3.Clear_E();
+        NS4.Clear_E();
     }
 
     WaitingEnter();
+
+    for(int i = 0; i < all_points; i++)
+    {
+        OutputConsole(rez_E.at(i), i);
+    }
+
     return 0;
 }
